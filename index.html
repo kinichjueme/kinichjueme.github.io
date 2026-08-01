@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>新生一班 · 星河剪贴簿</title>
+  <meta name="description" content="新生一班 — 星河剪贴簿。包班团队：廖老师（班主任）、常教、刘教、胡教（教官）、小陆老师（心理老师）。" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=ZCOOL+QingKe+HuangYou&family=Ma+Shan+Zheng&family=Noto+Serif+SC:wght@500;700;900&family=Noto+Sans+SC:wght@300;400;500;700&family=Cinzel:wght@500;700&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- 星空背景画布 -->
+  <canvas class="starfield" id="starfield"></canvas>
+
+  <!-- 光晕装饰 -->
+  <div class="aurora" aria-hidden="true">
+    <span class="aurora__blob aurora__blob--gold"></span>
+    <span class="aurora__blob aurora__blob--cyan"></span>
+    <span class="aurora__blob aurora__blob--violet"></span>
+  </div>
+
+  <!-- 顶部导航 -->
+  <nav class="nav" id="nav">
+    <a href="#cover" class="nav__brand" data-page="0">
+      <span class="nav__mark">一</span>
+      <span class="nav__name">新生一班</span>
+    </a>
+    <ul class="nav__links">
+      <li><a href="#about" data-page="1">班级</a></li>
+      <li><a href="#team" data-page="2">团队</a></li>
+      <li><a href="#douyin" data-page="3">抖音</a></li>
+      <li><a href="#gallery" data-page="4">影像</a></li>
+    </ul>
+    <button class="nav__toggle" id="navToggle" aria-label="菜单">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- 剪贴簿主体（横向翻页） -->
+  <main class="scrapbook" id="scrapbook">
+
+    <!-- 封面 -->
+    <section class="page page--cover" id="cover" data-page="0">
+      <div class="page__inner cover">
+        <div class="cover__frame">
+          <span class="corner corner--tl"></span>
+          <span class="corner corner--tr"></span>
+          <span class="corner corner--bl"></span>
+          <span class="corner corner--br"></span>
+          <p class="cover__eyebrow reveal">— 2026 · 启航季 —</p>
+          <h1 class="cover__title">
+            <span class="reveal" data-delay="0">新生</span>
+            <span class="cover__title-accent reveal" data-delay="1">一班</span>
+          </h1>
+          <p class="cover__tag reveal" data-delay="2">星河剪贴簿</p>
+          <div class="cover__seal reveal" data-delay="3">
+            <span class="cover__seal-char">一</span>
+          </div>
+        </div>
+        <p class="cover__hint reveal" data-delay="4">
+          <span class="cover__hint-desktop">向右翻阅 <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          <span class="cover__hint-mobile">向下滑动 <svg viewBox="0 0 24 24"><path d="M12 5v14M6 13l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        </p>
+      </div>
+    </section>
+
+    <!-- 关于我们 -->
+    <section class="page" id="about" data-page="1">
+      <div class="page__inner">
+        <div class="scrap-head reveal">
+          <span class="scrap-head__index">01</span>
+          <h2 class="scrap-head__title">关于我们</h2>
+          <p class="scrap-head__sub">ABOUT US</p>
+        </div>
+
+        <div class="collage collage--about">
+          <!-- 手写便签 -->
+          <div class="note note--lined reveal" style="--rot:-2deg" data-delay="0">
+            <span class="pin pin--red"></span>
+            <p>我们是一群被星河点名的年轻人。</p>
+            <p>教官的哨声是晨光，心理老师的温柔是港湾，<br/>班主任的目光是不偏航的坐标。</p>
+            <p>汗水与笑声并肩，磨砺与成长同行。</p>
+            <p class="note__sign">—— 新生一班</p>
+          </div>
+
+          <!-- 统计拍立得 -->
+          <div class="polaroid polaroid--sm reveal" style="--rot:4deg" data-delay="1">
+            <span class="tape tape--gold"></span>
+            <div class="polaroid__photo polaroid__photo--num">
+              <span class="big-num" data-count="1">0</span>
+            </div>
+            <p class="polaroid__cap">班主任</p>
+          </div>
+          <div class="polaroid polaroid--sm reveal" style="--rot:-5deg" data-delay="2">
+            <span class="tape tape--cyan"></span>
+            <div class="polaroid__photo polaroid__photo--num">
+              <span class="big-num" data-count="3">0</span>
+            </div>
+            <p class="polaroid__cap">位教官</p>
+          </div>
+          <div class="polaroid polaroid--sm reveal" style="--rot:3deg" data-delay="3">
+            <span class="tape tape--violet"></span>
+            <div class="polaroid__photo polaroid__photo--num">
+              <span class="big-num" data-count="1">0</span>
+            </div>
+            <p class="polaroid__cap">心理老师</p>
+          </div>
+          <div class="polaroid polaroid--sm reveal" style="--rot:-3deg" data-delay="4">
+            <span class="tape tape--gold"></span>
+            <div class="polaroid__photo polaroid__photo--num">
+              <span class="big-num" data-text="true">∞</span>
+            </div>
+            <p class="polaroid__cap">炽热的心</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 包班团队 -->
+    <section class="page" id="team" data-page="2">
+      <div class="page__inner">
+        <div class="scrap-head reveal">
+          <span class="scrap-head__index">02</span>
+          <h2 class="scrap-head__title">包班团队</h2>
+          <p class="scrap-head__sub">OUR MENTORS</p>
+        </div>
+
+        <div class="collage collage--team">
+          <!-- 班主任：大拍立得 -->
+          <div class="polaroid polaroid--lg polaroid--clickable reveal" style="--rot:-3deg" data-delay="0" data-teacher="liao">
+            <span class="tape tape--gold"></span>
+            <div class="polaroid__photo">
+              <img src="assets/teacher-liao.jpg" alt="廖老师" onerror="this.style.display='none';this.parentElement.classList.add('ph--liao')" />
+            </div>
+            <div class="polaroid__cap polaroid__cap--lead">
+              <span class="polaroid__name">廖老师</span>
+              <span class="polaroid__role">班主任 · 掌舵人</span>
+              <span class="polaroid__motto">「以心为灯，照你前行每一步。」</span>
+              <span class="polaroid__more">查看详情 ›</span>
+            </div>
+          </div>
+
+          <div class="polaroid polaroid--clickable reveal" style="--rot:4deg" data-delay="1" data-teacher="chang">
+            <span class="tape tape--cyan"></span>
+            <div class="polaroid__photo">
+              <img src="assets/teacher-chang.jpg" alt="常教" onerror="this.style.display='none';this.parentElement.classList.add('ph--chang')" />
+            </div>
+            <div class="polaroid__cap">
+              <span class="polaroid__name">常教</span>
+              <span class="polaroid__role">教官</span>
+              <span class="polaroid__more">查看详情 ›</span>
+            </div>
+          </div>
+          <div class="polaroid polaroid--clickable reveal" style="--rot:-4deg" data-delay="2" data-teacher="liu">
+            <span class="tape tape--gold"></span>
+            <div class="polaroid__photo">
+              <img src="assets/teacher-liu.jpg" alt="刘教" onerror="this.style.display='none';this.parentElement.classList.add('ph--liu')" />
+            </div>
+            <div class="polaroid__cap">
+              <span class="polaroid__name">刘教</span>
+              <span class="polaroid__role">教官</span>
+              <span class="polaroid__more">查看详情 ›</span>
+            </div>
+          </div>
+          <div class="polaroid polaroid--clickable reveal" style="--rot:3deg" data-delay="3" data-teacher="hu">
+            <span class="tape tape--cyan"></span>
+            <div class="polaroid__photo">
+              <img src="assets/teacher-hu.jpg" alt="胡教" onerror="this.style.display='none';this.parentElement.classList.add('ph--hu')" />
+            </div>
+            <div class="polaroid__cap">
+              <span class="polaroid__name">胡教</span>
+              <span class="polaroid__role">教官</span>
+              <span class="polaroid__more">查看详情 ›</span>
+            </div>
+          </div>
+          <div class="polaroid polaroid--heart polaroid--clickable reveal" style="--rot:-3deg" data-delay="4" data-teacher="lu">
+            <span class="tape tape--violet"></span>
+            <div class="polaroid__photo">
+              <img src="assets/teacher-lu.jpg" alt="小陆老师" onerror="this.style.display='none';this.parentElement.classList.add('ph--lu')" />
+            </div>
+            <div class="polaroid__cap">
+              <span class="polaroid__name">小陆老师</span>
+              <span class="polaroid__role">心理老师</span>
+              <span class="polaroid__more">查看详情 ›</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 班级抖音 -->
+    <section class="page" id="douyin" data-page="3">
+      <div class="page__inner">
+        <div class="scrap-head reveal">
+          <span class="scrap-head__index">03</span>
+          <h2 class="scrap-head__title">班级抖音</h2>
+          <p class="scrap-head__sub">CLASS DOUYIN</p>
+        </div>
+
+        <div class="collage collage--douyin">
+          <a class="polaroid polaroid--lg polaroid--douyin reveal" style="--rot:-3deg" data-delay="0"
+             href="https://www.douyin.com/user/MS4wLjABAAAAyCaGzdAvFi5_Ku064dlS2otD0th_ACdTVWofNa4OHfJ8KysTb1nXgrfDhSvYs4X7?is_from_aweme_search_engine=1"
+             target="_blank" rel="noopener noreferrer">
+            <span class="tape tape--gold"></span>
+            <div class="polaroid__photo polaroid__photo--douyin">
+              <img src="https://p3-pc.douyinpic.com/img/aweme-avatar/tos-cn-avt-0015_f9a772671a54257413f0f5e4b97cef05~c5_300x300.jpeg?from=2956013662" alt="新生一班抖音头像" />
+              <span class="douyin-badge douyin-badge--corner">
+                <svg viewBox="0 0 48 48" aria-hidden="true"><path fill="currentColor" d="M33 6c.9 4.5 3.6 7.6 8 8.3v5.4c-2.9.1-5.6-.7-8-2.2v11.9c0 7.3-5.9 13.2-13.2 13.2S6.6 36.7 6.6 29.4 12.5 16.2 19.8 16.2c.7 0 1.4.1 2 .2v5.6c-.7-.2-1.3-.3-2-.3-4.3 0-7.7 3.5-7.7 7.7s3.5 7.7 7.7 7.7 7.7-3.5 7.7-7.7V6H33z"/></svg>
+              </span>
+            </div>
+            <div class="polaroid__cap polaroid__cap--lead">
+              <span class="polaroid__name">@新生一班</span>
+              <span class="polaroid__role">关注我们 · 记录青春</span>
+              <span class="polaroid__motto">点击前往主页 →</span>
+            </div>
+          </a>
+
+          <div class="note note--sticky reveal" style="--rot:5deg" data-delay="1">
+            <span class="pin pin--cyan"></span>
+            <p>训练日常<br/>青春瞬间<br/>尽在抖音</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 班级影像 -->
+    <section class="page" id="gallery" data-page="4">
+      <div class="page__inner">
+        <div class="scrap-head reveal">
+          <span class="scrap-head__index">04</span>
+          <h2 class="scrap-head__title">班级影像</h2>
+          <p class="scrap-head__sub">MOMENTS</p>
+        </div>
+
+        <div class="collage collage--gallery">
+          <div class="polaroid polaroid--lg reveal" style="--rot:-3deg" data-delay="0">
+            <span class="tape tape--gold"></span>
+            <div class="polaroid__photo">
+              <img src="assets/gallery-1.jpg" alt="班级合影" onerror="this.style.display='none';this.parentElement.classList.add('ph--cam')" />
+            </div>
+            <p class="polaroid__cap">班级合影 · 星河启航</p>
+          </div>
+          <div class="polaroid reveal" style="--rot:4deg" data-delay="1">
+            <span class="tape tape--cyan"></span>
+            <div class="polaroid__photo">
+              <img src="assets/gallery-2.jpg" alt="训练瞬间" onerror="this.style.display='none';this.parentElement.classList.add('ph--cam')" />
+            </div>
+            <p class="polaroid__cap">训练瞬间</p>
+          </div>
+          <div class="polaroid reveal" style="--rot:-4deg" data-delay="2">
+            <span class="tape tape--violet"></span>
+            <div class="polaroid__photo">
+              <img src="assets/gallery-3.jpg" alt="团结一心" onerror="this.style.display='none';this.parentElement.classList.add('ph--cam')" />
+            </div>
+            <p class="polaroid__cap">团结一心</p>
+          </div>
+          <div class="polaroid reveal" style="--rot:3deg" data-delay="3">
+            <span class="tape tape--gold"></span>
+            <div class="polaroid__photo">
+              <img src="assets/gallery-4.jpg" alt="笑颜如光" onerror="this.style.display='none';this.parentElement.classList.add('ph--cam')" />
+            </div>
+            <p class="polaroid__cap">笑颜如光</p>
+          </div>
+          <div class="polaroid polaroid--wide reveal" style="--rot:-2deg" data-delay="4">
+            <span class="tape tape--cyan"></span>
+            <div class="polaroid__photo">
+              <img src="assets/gallery-5.jpg" alt="青春印记" onerror="this.style.display='none';this.parentElement.classList.add('ph--cam')" />
+            </div>
+            <p class="polaroid__cap">青春印记</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 尾页 -->
+    <section class="page page--end" id="end" data-page="5">
+      <div class="page__inner end">
+        <div class="end__frame reveal">
+          <span class="corner corner--tl"></span>
+          <span class="corner corner--br"></span>
+          <p class="end__quote">「我们终将成为<br/>自己仰望的星光。」</p>
+          <div class="end__brand">
+            <span class="end__mark">一</span>
+            <div>
+              <h4>新生一班</h4>
+              <p>星河新锐 · 披光而行</p>
+            </div>
+          </div>
+          <p class="end__copy">© 2026 新生一班 · 以青春之名共赴星河</p>
+          <button class="btn btn--ghost end__back" id="backCover" type="button">回到封面</button>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- 翻页按钮（桌面） -->
+  <button class="slide-nav slide-nav--prev" id="prevPage" aria-label="上一页" type="button">
+    <svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+  <button class="slide-nav slide-nav--next" id="nextPage" aria-label="下一页" type="button">
+    <svg class="slide-nav__icon" viewBox="0 0 24 24"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    <svg class="slide-nav__icon slide-nav__icon--restart" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7M3 4v4h4" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+
+  <!-- 页码指示器 -->
+  <div class="page-dots" id="pageDots" aria-hidden="true"></div>
+
+  <!-- 移动端翻页提示 -->
+  <div class="mobile-flip" id="mobileFlip" aria-hidden="true">
+    <svg viewBox="0 0 24 24"><path d="M12 5v14M6 13l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </div>
+
+  <!-- 教师详情弹窗 -->
+  <div class="modal" id="teacherModal" aria-hidden="true" role="dialog" aria-modal="true" aria-label="教师详情">
+    <div class="modal__backdrop" data-close></div>
+    <div class="modal__card" id="modalCard">
+      <button class="modal__close" data-close type="button" aria-label="关闭">×</button>
+      <div class="modal__tape"></div>
+      <div class="modal__photo" id="modalPhoto"></div>
+      <div class="modal__body">
+        <span class="modal__role" id="modalRole"></span>
+        <h3 class="modal__name" id="modalName"></h3>
+        <p class="modal__motto" id="modalMotto"></p>
+        <div class="modal__divider"></div>
+        <p class="modal__bio" id="modalBio"></p>
+        <div class="modal__tags" id="modalTags"></div>
+        <p class="modal__msg" id="modalMsg"></p>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
