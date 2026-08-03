@@ -2,6 +2,61 @@
    新生一班 · 星河剪贴簿 — 交互脚本
    ======================================================================== */
 
+/* ---------- 资源加载追踪 ---------- */
+(() => {
+  const loader = document.getElementById("loader");
+  const fill = document.getElementById("loaderFill");
+  const percent = document.getElementById("loaderPercent");
+  if (!loader || !fill || !percent) return;
+
+  // 收集所有需要加载的资源（不跳过已完成的）
+  const resources = [];
+  document.querySelectorAll("img").forEach((img) => {
+    if (img.src) resources.push(img);
+  });
+  document.querySelectorAll("audio").forEach((a) => {
+    if (a.src) resources.push(a);
+  });
+
+  if (resources.length === 0) {
+    loader.classList.add("done");
+    return;
+  }
+
+  let loaded = 0;
+  const total = resources.length;
+
+  function updateProgress() {
+    loaded++;
+    const pct = Math.round((loaded / total) * 100);
+    fill.style.width = pct + "%";
+    percent.textContent = pct + "%";
+    if (loaded >= total) {
+      setTimeout(() => loader.classList.add("done"), 400);
+    }
+  }
+
+  resources.forEach((el) => {
+    if (el.complete || el.readyState >= 2) {
+      updateProgress();
+    } else {
+      let done = false;
+      const onDone = () => { if (!done) { done = true; updateProgress(); } };
+      el.addEventListener("load", onDone, { once: true });
+      el.addEventListener("error", onDone, { once: true });
+      // 单个资源兜底：5 秒无响应就算完成
+      setTimeout(onDone, 5000);
+    }
+  });
+
+  // 兜底：10 秒后无论如何隐藏
+  setTimeout(() => {
+    if (!loader.classList.contains("done")) {
+      loader.classList.add("done");
+    }
+  }, 10000);
+})();
+
 const isMobile = () => window.matchMedia("(max-width: 640px)").matches;
 
 /* ---------- 星空背景 ---------- */
@@ -271,7 +326,7 @@ const isMobile = () => window.matchMedia("(max-width: 640px)").matches;
       name: "刘教", role: "教官",
       motto: "「令行禁止，热血不熄。」",
       img: "assets/teacher-liu.jpg", ph: "ph--liu",
-      bio: "口令干脆、动作利落，刘教是队里公认的“动作担当”。严苛的外表下藏着一颗炽热的心，最怕看到学生放弃自己。",
+      bio: '口令干脆、动作利落，刘教是队里公认的\u201C动作担当\u201D。严苛的外表下藏着一颗炽热的心，最怕看到学生放弃自己。',
       tags: ["体能", "标准", "热血", "陪伴"],
       msg: "标准从来不是为难你，而是让你知道——你可以比想象中更好。",
     },
@@ -287,9 +342,17 @@ const isMobile = () => window.matchMedia("(max-width: 640px)").matches;
       name: "小陆老师", role: "心理老师",
       motto: "「倾听每一颗心的回响。」",
       img: "assets/teacher-lu.jpg", ph: "ph--lu",
-      bio: "新生一班的“情绪港湾”。无论是想家的夜晚、训练的压力，还是说不清的小情绪，小陆老师都愿意陪你慢慢聊、慢慢懂。",
+      bio: '新生一班的\u201C情绪港湾\u201D。无论是想家的夜晚、训练的压力，还是说不清的小情绪，小陆老师都愿意陪你慢慢聊、慢慢懂。',
       tags: ["倾听", "疏导", "温暖", "安心"],
       msg: "累了、难过了，随时来找我。你不必一个人扛着所有情绪。",
+    },
+    wang: {
+      name: "王老师", role: "体育老师 · 德育处主任",
+      motto: "「强健体魄，端正品行。」",
+      img: "assets/teacher-wang.jpg", ph: "ph--wang",
+      bio: "操场上的王老师雷厉风行，德育处的王主任刚正不阿。他用汗水教会学生什么叫坚持，用品格教会学生什么叫担当。",
+      tags: ["体育", "德育", "刚毅", "正气"],
+      msg: "身体是革命的本钱，品行是做人的根基。两个都不能落下！",
     },
   };
 
@@ -350,5 +413,81 @@ const isMobile = () => window.matchMedia("(max-width: 640px)").matches;
       el.style.transform = `rotate(0deg) translateY(-6px) scale(1.03) perspective(800px) rotateY(${px * 6}deg) rotateX(${-py * 6}deg)`;
     });
     el.addEventListener("mouseleave", () => { el.style.transform = ""; });
+  });
+})();
+
+/* ---------- BGM 播放控制 ---------- */
+(() => {
+  const audio = document.getElementById("bgmPlayer");
+  const btn = document.getElementById("bgmBtn");
+  if (!audio || !btn) return;
+
+  let playing = false;
+  let unmuted = false;
+
+  function updateUI() {
+    btn.classList.toggle("playing", playing);
+    btn.setAttribute("title", playing ? "暂停背景音乐" : "播放背景音乐");
+  }
+
+  function play() {
+    audio.play().then(() => { playing = true; updateUI(); }).catch(() => {});
+  }
+
+  function pause() {
+    audio.pause();
+    playing = false;
+    updateUI();
+  }
+
+  function toggle() {
+    if (playing) pause(); else play();
+  }
+
+  // 标记按钮为"播放中"状态（符合用户预期）
+  playing = true;
+  updateUI();
+
+  // 首次用户交互时启动播放
+  let started = false;
+  function startBgm() {
+    if (started) return;
+    started = true;
+    audio.muted = true;
+    audio.play().then(() => {
+      playing = true;
+      updateUI();
+    }).catch(() => { playing = false; updateUI(); });
+    document.removeEventListener("click", startBgm);
+    document.removeEventListener("touchstart", startBgm);
+  }
+  document.addEventListener("click", startBgm);
+  document.addEventListener("touchstart", startBgm);
+
+  // 也尝试直接自动播放（部分浏览器允许）
+  audio.muted = true;
+  audio.play().then(() => {
+    started = true; // 成功了，取消等待交互
+    document.removeEventListener("click", startBgm);
+    document.removeEventListener("touchstart", startBgm);
+    playing = true;
+    updateUI();
+  }).catch(() => {});
+
+  // 首次用户交互时取消静音
+  function unmute() {
+    if (unmuted) return;
+    unmuted = true;
+    audio.muted = false;
+    document.removeEventListener("click", unmute);
+    document.removeEventListener("touchstart", unmute);
+  }
+  document.addEventListener("click", unmute);
+  document.addEventListener("touchstart", unmute);
+
+  btn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    if (!unmuted) { unmuted = true; audio.muted = false; }
+    toggle();
   });
 })();

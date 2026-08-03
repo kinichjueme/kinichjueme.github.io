@@ -59,6 +59,113 @@ img { display: block; max-width: 100%; }
 a { color: inherit; text-decoration: none; }
 ::selection { background: var(--gold); color: var(--bg-0); }
 
+/* ===== 加载动画 ===== */
+.loader {
+  position: fixed; inset: 0; z-index: 9999;
+  background: radial-gradient(ellipse at 50% 40%, #0d0f2b, #050814 70%);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 1.8rem;
+  transition: opacity .8s ease, visibility 0s .8s;
+  opacity: 1; visibility: visible;
+}
+.loader.done { opacity: 0; visibility: hidden; pointer-events: none; }
+
+/* 月亮 + 轨道容器 */
+.loader__scene { position: relative; width: 200px; height: 200px; }
+.loader__moon {
+  position: absolute; inset: 0; margin: auto;
+  width: 64px; height: 64px; display: grid; place-items: center;
+  animation: moonBreathe 3s ease-in-out infinite;
+}
+.loader__moon-glow {
+  position: absolute; inset: -20px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255,216,107,.3), transparent 70%);
+  animation: glowPulse 2.5s ease-in-out infinite;
+}
+.loader__moon-face { font-size: 2.4rem; filter: drop-shadow(0 0 18px rgba(255,216,107,.7)); }
+
+/* 轨道 */
+.loader__orbit {
+  position: absolute; inset: 0;
+  border: 1px solid rgba(255,255,255,.08); border-radius: 50%;
+  animation: orbitSpin 8s linear infinite;
+}
+/* 轨道上的星星 */
+.loader__star {
+  position: absolute; font-size: .9rem;
+  color: var(--gold-bright);
+  filter: drop-shadow(0 0 6px rgba(255,216,107,.6));
+  animation: starTwinkle 1.5s ease-in-out infinite;
+}
+.loader__star--1 { top: 0; left: 50%; transform: translateX(-50%) translateY(-50%); animation-delay: 0s; }
+.loader__star--2 { top: 14.6%; right: 14.6%; animation-delay: .25s; }
+.loader__star--3 { right: 0; top: 50%; transform: translateY(-50%) translateX(50%); animation-delay: .5s; }
+.loader__star--4 { bottom: 14.6%; right: 14.6%; animation-delay: .75s; }
+.loader__star--5 { bottom: 0; left: 50%; transform: translateX(-50%) translateY(50%); animation-delay: 1s; }
+.loader__star--6 { left: 14.6%; bottom: 14.6%; animation-delay: 1.25s; }
+
+/* 外围彗星 */
+.loader__comet {
+  position: absolute; font-size: .8rem; color: var(--cyan-bright);
+  filter: drop-shadow(0 0 8px rgba(122,245,232,.8));
+  animation: cometFly 2.8s linear infinite;
+  left: -10%; top: 50%;
+}
+
+/* 提示文字 */
+.loader__text {
+  font-family: var(--ff-serif); font-size: 1rem; letter-spacing: .12em;
+  color: var(--ink-soft);
+  animation: textFade 2s ease-in-out infinite;
+}
+
+/* 进度条 */
+.loader__progress {
+  display: flex; align-items: center; gap: .8rem;
+  width: min(320px, 70vw);
+}
+.loader__bar {
+  flex: 1; height: 4px; background: rgba(255,255,255,.1);
+  border-radius: 4px; overflow: hidden;
+}
+.loader__bar-fill {
+  display: block; height: 100%; width: 0;
+  background: linear-gradient(90deg, var(--gold), var(--cyan));
+  border-radius: 4px;
+  transition: width .3s ease;
+}
+.loader__percent {
+  font-family: var(--ff-latin); font-size: .85rem; letter-spacing: .1em;
+  color: var(--gold);
+  min-width: 2.8em; text-align: right;
+}
+
+@keyframes moonBreathe {
+  0%,100% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+}
+@keyframes glowPulse {
+  0%,100% { opacity: .6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+@keyframes orbitSpin {
+  to { transform: rotate(360deg); }
+}
+@keyframes starTwinkle {
+  0%,100% { opacity: .4; transform: scale(.8); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+@keyframes cometFly {
+  0% { left: -10%; top: 50%; opacity: 0; }
+  20% { opacity: 1; }
+  80% { opacity: 1; }
+  100% { left: 110%; top: 10%; opacity: 0; }
+}
+@keyframes textFade {
+  0%,100% { opacity: .5; }
+  50% { opacity: 1; }
+}
+
 /* ===== 星空 / 光晕 ===== */
 .starfield { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
 .aurora { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
@@ -142,6 +249,18 @@ a { color: inherit; text-decoration: none; }
 }
 .scrap-head__sub { font-family: var(--ff-latin); font-size: .72rem; letter-spacing: .5em; color: var(--ink-mute); margin-top: .9rem; }
 
+/* 左上角标题（班级影像专用） */
+.scrap-head--corner {
+  text-align: left;
+  position: absolute;
+  top: 0; left: 0;
+  margin-bottom: 0;
+  z-index: 5;
+}
+.scrap-head--corner .scrap-head__title { font-size: clamp(1.4rem, 3.5vw, 2rem); }
+.scrap-head--corner .scrap-head__title::after { left: 0; transform: none; }
+.scrap-head--corner .scrap-head__sub { margin-top: .3rem; font-size: .62rem; }
+
 /* ===== 拍立得通用 ===== */
 .polaroid {
   position: relative;
@@ -168,6 +287,7 @@ a { color: inherit; text-decoration: none; }
 .polaroid__photo.ph--liu::after,
 .polaroid__photo.ph--hu::after,
 .polaroid__photo.ph--lu::after,
+.polaroid__photo.ph--wang::after,
 .polaroid__photo.ph--cam::after {
   content: attr(data-ch);
   position: absolute; inset: 0; display: grid; place-items: center;
@@ -178,6 +298,7 @@ a { color: inherit; text-decoration: none; }
 .polaroid__photo.ph--liu::after { content: "刘"; }
 .polaroid__photo.ph--hu::after { content: "胡"; }
 .polaroid__photo.ph--lu::after { content: "陆"; }
+.polaroid__photo.ph--wang::after { content: "王"; }
 .polaroid__photo.ph--cam::after { content: "📷"; font-size: 2.6rem; }
 
 .polaroid__cap {
@@ -559,7 +680,7 @@ a { color: inherit; text-decoration: none; }
 }
 .modal__photo img { width: 100%; height: 100%; object-fit: cover; }
 .modal__photo.ph--liao::after, .modal__photo.ph--chang::after, .modal__photo.ph--liu::after,
-.modal__photo.ph--hu::after, .modal__photo.ph--lu::after {
+.modal__photo.ph--hu::after, .modal__photo.ph--lu::after, .modal__photo.ph--wang::after {
   content: attr(data-ch); position: absolute; inset: 0; display: grid; place-items: center;
   font-family: var(--ff-display); font-size: 5rem; color: var(--gold-bright);
 }
@@ -568,6 +689,7 @@ a { color: inherit; text-decoration: none; }
 .modal__photo.ph--liu::after { content: "刘"; }
 .modal__photo.ph--hu::after { content: "胡"; }
 .modal__photo.ph--lu::after { content: "陆"; }
+.modal__photo.ph--wang::after { content: "王"; }
 .modal__close {
   position: absolute; top: 12px; right: 12px; z-index: 3;
   width: 36px; height: 36px; border-radius: 50%;
@@ -608,6 +730,41 @@ a { color: inherit; text-decoration: none; }
   .modal__card { max-width: 100%; }
   .modal__name { font-size: 1.8rem; }
   .modal__body { padding: 1.1rem 1.3rem 0; }
+}
+
+/* ===== BGM 音乐按钮 ===== */
+.bgm-btn {
+  position: fixed; bottom: 1.4rem; left: 5rem; z-index: 95;
+  width: 44px; height: 44px; border-radius: 50%;
+  background: rgba(10,14,31,.55); border: 1px solid var(--glass-brd);
+  backdrop-filter: blur(10px); color: var(--ink-soft);
+  display: grid; place-items: center; cursor: pointer;
+  transition: border-color .3s, color .3s, box-shadow .3s;
+}
+.bgm-btn:hover { border-color: var(--cyan); color: var(--cyan-bright); box-shadow: 0 0 20px rgba(79,209,197,.3); }
+.bgm-btn svg { width: 18px; height: 18px; position: absolute; transition: opacity .3s, transform .3s; }
+.bgm-btn__pause { opacity: 0; transform: scale(.6); }
+/* 播放中：显示暂停图标，外圈脉冲 */
+.bgm-btn.playing .bgm-btn__play { opacity: 0; transform: scale(.6); }
+.bgm-btn.playing .bgm-btn__pause { opacity: 1; transform: scale(1); }
+.bgm-btn.playing { border-color: var(--gold); color: var(--gold-bright); box-shadow: 0 0 24px rgba(245,185,66,.4); }
+/* 外圈扩散环 */
+.bgm-btn__ring {
+  position: absolute; inset: -4px; border-radius: 50%;
+  border: 1px solid rgba(245,185,66,.5);
+  opacity: 0; pointer-events: none;
+}
+.bgm-btn.playing .bgm-btn__ring {
+  animation: ringPulse 1.8s ease-out infinite;
+}
+@keyframes ringPulse {
+  0% { transform: scale(1); opacity: .8; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+
+@media (max-width: 640px) {
+  .bgm-btn { bottom: 1.6rem; left: 4.5rem; width: 40px; height: 40px; }
+  .bgm-btn svg { width: 16px; height: 16px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
