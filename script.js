@@ -2,61 +2,6 @@
    新生一班 · 星河剪贴簿 — 交互脚本
    ======================================================================== */
 
-/* ---------- 资源加载追踪 ---------- */
-(() => {
-  const loader = document.getElementById("loader");
-  const fill = document.getElementById("loaderFill");
-  const percent = document.getElementById("loaderPercent");
-  if (!loader || !fill || !percent) return;
-
-  // 收集所有需要加载的资源（不跳过已完成的）
-  const resources = [];
-  document.querySelectorAll("img").forEach((img) => {
-    if (img.src) resources.push(img);
-  });
-  document.querySelectorAll("audio").forEach((a) => {
-    if (a.src) resources.push(a);
-  });
-
-  if (resources.length === 0) {
-    loader.classList.add("done");
-    return;
-  }
-
-  let loaded = 0;
-  const total = resources.length;
-
-  function updateProgress() {
-    loaded++;
-    const pct = Math.round((loaded / total) * 100);
-    fill.style.width = pct + "%";
-    percent.textContent = pct + "%";
-    if (loaded >= total) {
-      setTimeout(() => loader.classList.add("done"), 400);
-    }
-  }
-
-  resources.forEach((el) => {
-    if (el.complete || el.readyState >= 2) {
-      updateProgress();
-    } else {
-      let done = false;
-      const onDone = () => { if (!done) { done = true; updateProgress(); } };
-      el.addEventListener("load", onDone, { once: true });
-      el.addEventListener("error", onDone, { once: true });
-      // 单个资源兜底：5 秒无响应就算完成
-      setTimeout(onDone, 5000);
-    }
-  });
-
-  // 兜底：10 秒后无论如何隐藏
-  setTimeout(() => {
-    if (!loader.classList.contains("done")) {
-      loader.classList.add("done");
-    }
-  }, 10000);
-})();
-
 const isMobile = () => window.matchMedia("(max-width: 640px)").matches;
 
 /* ---------- 星空背景 ---------- */

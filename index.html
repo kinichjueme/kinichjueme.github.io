@@ -13,33 +13,6 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <!-- 加载动画 -->
-  <div class="loader" id="loader" aria-hidden="false">
-    <div class="loader__scene">
-      <!-- 月亮 -->
-      <div class="loader__moon">
-        <div class="loader__moon-glow"></div>
-        <span class="loader__moon-face">🌙</span>
-      </div>
-      <!-- 轨道星星 -->
-      <div class="loader__orbit">
-        <span class="loader__star loader__star--1">✦</span>
-        <span class="loader__star loader__star--2">✦</span>
-        <span class="loader__star loader__star--3">✦</span>
-        <span class="loader__star loader__star--4">✦</span>
-        <span class="loader__star loader__star--5">✦</span>
-        <span class="loader__star loader__star--6">✦</span>
-      </div>
-      <!-- 外围流星 -->
-      <span class="loader__comet">✦</span>
-    </div>
-    <p class="loader__text">为了体验，请等待资源完成加载……</p>
-    <div class="loader__progress">
-      <div class="loader__bar"><span class="loader__bar-fill" id="loaderFill"></span></div>
-      <span class="loader__percent" id="loaderPercent">0%</span>
-    </div>
-  </div>
-
   <!-- 星空背景画布 -->
   <canvas class="starfield" id="starfield"></canvas>
 
